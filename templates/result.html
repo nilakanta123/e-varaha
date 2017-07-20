@@ -27,8 +27,31 @@
 </div>
 <!-- end nav-bar -->
 <section>
-	<h2>{{result.disease}}</h2>
-	<h2>{{result.am_dec}}</h2>
+
+  <div style="padding: 0px 50px 0px 50px;">          
+    <table class="table table-bordered">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Sl No.</th>
+          <th>Pedicted Disease</th>
+          <th>AntiMortem Decision</th>
+          <th>with probability</th>
+          <th>PostMortem Decision</th>
+          <th>with probability</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>{{result.disease}}</td>
+          <td>{{result.am_dec}}</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 {% endblock content %}

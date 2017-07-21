@@ -46,9 +46,10 @@
         <h1>Please provide the relevent information to predict your result...</h1>
       </div>
       <!-- <div id = 'message'>Initial text</div> -->
-      <input id="decision_switch" type="checkbox" data-on-text="Anti-Mortem" data-on-color="primary" data-off-color="primary" data-off-text="Post-Mortem" data-label-width="5px" name="decision_switch" checked>
-       <div id='message'>None</div>
+      <!-- <input id="decision_switch" type="checkbox" data-on-text="Anti-Mortem" data-on-color="primary" data-off-color="primary" data-off-text="Post-Mortem" data-label-width="5px" name="decision_switch" checked> -->
+      <h3>Selected Table in Database is <span id='message'>None</span></h3>
       <form method="POST" >
+        <input id="decision_switch" type="checkbox" data-on-text="Anti-Mortem" data-on-color="primary" data-off-color="primary" data-off-text="Post-Mortem" data-label-width="5px" name="decision_switch" checked>
         {% csrf_token %}
        <!--  {{ form.non_field_errors }} -->
         <div class="row">       

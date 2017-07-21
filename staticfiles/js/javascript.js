@@ -10,12 +10,8 @@ $(document).ready(function(){
             console.log("UNchecked");
             $('#postmortem').show();
         }
-        // console.log(this); // DOM element
-        // console.log(event); // jQuery event
-        // console.log(state); // true | false
     });
 
-    // Django generated form id
     $('#id_type_of_organisms').multiselect({
         maxHeight: 200,
         buttonWidth: '100%',
@@ -42,7 +38,6 @@ $(document).ready(function(){
             }
         });
         return false;
-   
     });
     $('#id_age_group').multiselect({
         maxHeight: 200,
@@ -87,7 +82,6 @@ $(document).ready(function(){
         enableCaseInsensitiveFiltering: true,
     });
     
-    // smooth scroll link id
     $("#about-link").click(function(e) {
         e.preventDefault();
         $('html, body').animate({
@@ -112,12 +106,11 @@ $(document).ready(function(){
             scrollTop: $("#myCarousel").offset().top
         }, 700);
     });
-    
-    function updateSelect(id, options){  
-        option ="<option value=''>None selected</option>";
-        $.each(options, function(key, obj){ option+="<option value="+obj.value+">"+obj.label+"</option>"; });
-        id.children().remove().end().append(option);
-        id.multiselect('rebuild');
-    }
-
 });
+
+function updateSelect(id, options){  
+    option ="<option value=''>None selected</option>";
+    $.each(options, function(key, obj){ option+="<option value="+obj.value+">"+obj.label+"</option>"; });
+    id.children().remove().end().append(option);
+    id.multiselect('rebuild');
+}

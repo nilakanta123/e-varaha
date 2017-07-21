@@ -1,12 +1,12 @@
 $(document).ready(function(){
 
-    function updateSelect(id, options){  
-        option ="<option value="+""+">None selected</option>";
-        $.each(options, function(key, obj){ option+="<option value="+obj.value+">"+obj.label+"</option>"; });
-        id.children().remove().end().append(option);
-        id.multiselect('rebuild');
-    }
-    
+    $('#decision_switch').bootstrapSwitch();
+    $('#decision_switch').on('switchChange.bootstrapSwitch', function(event, state) {
+        console.log(this); // DOM element
+        console.log(event); // jQuery event
+        console.log(state); // true | false
+    });
+
     // Django generated form id
     $('#id_type_of_organisms').multiselect({
         maxHeight: 200,
@@ -78,7 +78,7 @@ $(document).ready(function(){
         numberDisplayed: 10,
         enableCaseInsensitiveFiltering: true,
     });
-
+    
     // smooth scroll link id
     $("#about-link").click(function(e) {
         e.preventDefault();
@@ -105,6 +105,11 @@ $(document).ready(function(){
         }, 700);
     });
     
-
+    function updateSelect(id, options){  
+        option ="<option value=''>None selected</option>";
+        $.each(options, function(key, obj){ option+="<option value="+obj.value+">"+obj.label+"</option>"; });
+        id.children().remove().end().append(option);
+        id.multiselect('rebuild');
+    }
 
 });

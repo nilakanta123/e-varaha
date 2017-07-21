@@ -10,8 +10,7 @@ import json
 def home_view(request):
 
 	if request.method == 'POST':
-		# table_name = request.POST.get('post_table')
-		# print (table_name)
+		
 		form = InputForm(request.POST)
 
 		if form.is_valid():
@@ -25,7 +24,7 @@ def home_view(request):
 			pm_findings = form.cleaned_data['pm_findings']
 
 			table = findTable(type_of_organisms)
-			print (table)
+
 			result_dict = naive({"system_affected":[system_affected], "organ_affected":getListFromString(organ_affected),
 			"age_group":[age_group], "disease_condition":[disease_condition],
 			"type_of_organisms":[type_of_organisms], "causative_agent":[causative_agent],
@@ -45,8 +44,7 @@ def ajax_request(request):
     if request.method == 'POST' and request.is_ajax():
     	response_data = {}
     	if request.POST.get('post_table') == "":
-    		table = "None Selected!!"
-    		response_data['table'] = table
+    		response_data['table'] = "None Selected!!"
     	else:
     		table = findTable(request.POST.get('post_table'))
 	    	response_data['table'] = table

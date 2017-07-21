@@ -46,7 +46,7 @@
         <h1>Please provide the relevent information to predict your result...</h1>
       </div>
       <!-- <div id = 'message'>Initial text</div> -->
-      <input id="decision_switch" type="checkbox" data-on-text="Antimortem" data-on-color="primary" data-off-color="primary" data-off-text="Postmortem" data-label-width="5px" name="decision_switch" checked>
+      <input id="decision_switch" type="checkbox" data-on-text="Anti-Mortem" data-on-color="primary" data-off-color="primary" data-off-text="Post-Mortem" data-label-width="5px" name="decision_switch" checked>
        <div id='message'>None</div>
       <form method="POST" >
         {% csrf_token %}
@@ -105,7 +105,7 @@
               <p class="help">{{ form.disease_condition.help_text|safe }}</p>
             </div>
 
-            <div class="dropdown">
+            <div id="postmortem" class="dropdown">
               {{ form.pm_findings.label_tag }}
               {{form.pm_findings}}
               {{ form.pm_findings.errors }}

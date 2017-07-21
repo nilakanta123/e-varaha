@@ -2,9 +2,17 @@ $(document).ready(function(){
 
     $('#decision_switch').bootstrapSwitch();
     $('#decision_switch').on('switchChange.bootstrapSwitch', function(event, state) {
-        console.log(this); // DOM element
-        console.log(event); // jQuery event
-        console.log(state); // true | false
+        // var x=$(this).data('on-text');
+        if($("#decision_switch").is(':checked')){
+            console.log("Checked");
+            $('#postmortem').hide();
+        }else{
+            console.log("UNchecked");
+            $('#postmortem').show();
+        }
+        // console.log(this); // DOM element
+        // console.log(event); // jQuery event
+        // console.log(state); // true | false
     });
 
     // Django generated form id

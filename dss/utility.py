@@ -1,5 +1,6 @@
 from .models import Viral
 from django.apps import apps
+import operator
 
 def getListFromString(slist):
 	if slist:
@@ -90,6 +91,79 @@ def naive(dic):
 	print ("######    FINAL DECISION IS Antimortem Decision = "+final_amd+" with probability "+str(final_amd_prob)+"  #######")
 
 	return {"disease" : final_disease, "am_dec" : final_amd}
+
+def naiveForDisease(dic):
+	model = apps.get_model('dss', dic['table'])
+	diseases = model.objects.filter(disease_condition__isnull=False).values_list('disease_condition', flat=True).distinct()
+	result = []
+	for disease in diseases:
+		p1=probc("system_affected", dic, "disease_row", disease, model)
+		p2=probc("organ_affected", dic, "disease_row", disease, model)
+		p3=probc("age_group", dic, "disease_row", disease, model)
+		p4=probc("am_findings", dic, "disease_row", disease, model)
+		p5=probc("pm_findings", dic, "disease_row", disease, model)
+		p6=proba("disease_condition", disease, model)
+
+		prob = p1*p2*p3*p4*p5*p6
+		result.append({'disease':disease, 'prob': prob})
+
+	result.sort(key=operator.itemgetter('prob'), reverse=True)
+
+	# for d in result:
+	# 	print (d)
+
+	return result
+
+def naiveForAntimortem(dic):
+	model = apps.get_model('dss', dic['table'])
+	am_decisions = model.objects.filter(am_decision__isnull=False).values_list('am_decision', flat=True).distinct()
+	result = []
+	for am_decision in am_decisions:
+		p1=probc("system_affected", dic ,"am", am_decision, model)
+		p2=probc("organ_affected", dic ,"am", am_decision, model)
+		p3=probc("age_group", dic ,"am", am_decision, model)
+		p4=probc("disease_condition", dic ,"am", am_decision, model)
+		p5=probc("type_of_organisms", dic ,"am", am_decision, model)
+		p6=probc("causative_agent", dic ,"am", am_decision, model)
+		p7=probc("am_findings", dic ,"am", am_decision, model)
+		p8=proba("am_decision",am_decision, model)
+
+		prob = p1*p2*p3*p4*p5*p6*p7*p8
+
+		result.append({'decision':am_decision, 'prob': prob})
+
+	result.sort(key=operator.itemgetter('prob'), reverse=True)
+
+	# for d in result:
+		# print (d)
+
+	return result
+
+def naiveForPostmortem(dic):
+	model = apps.get_model('dss', dic['table'])
+	pm_decisions = model.objects.filter(pm_judgement__isnull=False).values_list('pm_judgement', flat=True).distinct()
+	result = []
+	for pm_decision in pm_decisions:
+		p1=probc("system_affected", dic ,"pm", pm_decision, model)
+		p2=probc("organ_affected", dic ,"pm", pm_decision, model)
+		p3=probc("age_group", dic ,"pm", pm_decision, model)
+		p4=probc("disease_condition", dic ,"pm", pm_decision, model)
+		p5=probc("type_of_organisms", dic ,"pm", pm_decision, model)
+		p6=probc("causative_agent", dic ,"pm", pm_decision, model)
+		p7=probc("am_findings", dic ,"pm", pm_decision, model)
+		p8=probc("pm_findings", dic ,"pm", pm_decision, model)
+		p9=proba("pm_judgement",pm_decision, model)
+
+		prob = p1*p2*p3*p4*p5*p6*p7*p8*p9
+
+		result.append({'decision':pm_decision, 'prob': prob})
+
+	result.sort(key=operator.itemgetter('prob'), reverse=True)
+
+	# for d in result:
+	# 	print (d)
+
+	return result
 
 # sum all the probabilities if the column have multiple items for specific decision column 
 def probc(colname, dic, decision, decvalue, model):

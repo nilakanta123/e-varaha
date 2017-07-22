@@ -34,24 +34,25 @@
         <tr>
           <th>Sl No.</th>
           <th>Pedicted Disease</th>
-          <th>AntiMortem Decision</th>
-          <th>with probability</th>
-          <th>PostMortem Decision</th>
-          <th>with probability</th>
+          {% if decision_type == "antimortem" %}
+            <th>Anti-Mortem Decision</th>
+          {% elif decision_type == "postmortem"  %}
+            <th>Post-Mortem Decision</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
+        {% for item in result %}
         <tr>
-          <th scope="row">1</th>
-          <td>{{result.disease}}</td>
-          <td>{{result.am_dec}}</td>
-          <td>--</td>
-          <td>--</td>
-          <td>--</td>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{item.disease}}  with prob {{item.disease_prob}}</td>
+          <td>{{item.justment}}  with prob {{item.justment_prob}}</td>
         </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
+ 
 </section>
 
 {% endblock content %}

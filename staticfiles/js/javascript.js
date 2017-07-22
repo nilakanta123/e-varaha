@@ -6,9 +6,11 @@ $(document).ready(function(){
         if($("#decision_switch").is(':checked')){
             console.log("Checked");
             $('#postmortem').hide();
+            $('#decision_switch').checked();
         }else{
             console.log("UNchecked");
             $('#postmortem').show();
+            $('#decision_switch').checked();
         }
     });
 

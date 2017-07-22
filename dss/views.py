@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django import forms
 from .models import Viral
 from .forms import InputForm
-from .utility import naive, getColumnData, getListFromString, allorganisms, findTable
+from .utility import naive, naiveForDisease, naiveForAntimortem, naiveForPostmortem, getColumnData, getListFromString, allorganisms, findTable
 import json
 
 def home_view(request):
@@ -14,6 +14,7 @@ def home_view(request):
 		form = InputForm(request.POST)
 
 		if form.is_valid():
+			decision_switch = request.POST.get('decision_switch')
 			type_of_organisms = form.cleaned_data['type_of_organisms']
 			age_group = form.cleaned_data['age_group']
 			system_affected = form.cleaned_data['system_affected']
@@ -25,12 +26,30 @@ def home_view(request):
 
 			table = findTable(type_of_organisms)
 
-			result_dict = naive({"system_affected":[system_affected], "organ_affected":getListFromString(organ_affected),
+			dic = {"system_affected":[system_affected], "organ_affected":getListFromString(organ_affected),
 			"age_group":[age_group], "disease_condition":[disease_condition],
 			"type_of_organisms":[type_of_organisms], "causative_agent":[causative_agent],
-			"am_findings":getListFromString(am_findings), "pm_findings":getListFromString(pm_findings), "table":table})
+			"am_findings":getListFromString(am_findings), "pm_findings":getListFromString(pm_findings), "table":table}
+			decision =""
+			if decision_switch:
+				decision_type = "antimortem"
+				justment = naiveForAntimortem(dic)
+			else:
+				decision_type = "postmortem"
+				justment = naiveForPostmortem(dic)
+			disease =naiveForDisease(dic)
 
-			return render(request, 'result.html', {'result': result_dict})
+			result = []
+			result.append({"disease": disease[0]['disease'], "disease_prob": disease[0]['prob'],
+				"justment": justment[0]['decision'], "justment_prob": justment[0]['prob']})
+			result.append({"disease": disease[1]['disease'], "disease_prob": disease[1]['prob'],
+				"justment": justment[1]['decision'], "justment_prob": justment[1]['prob']})
+			result.append({"disease": disease[2]['disease'], "disease_prob": disease[2]['prob'],
+				"justment": justment[2]['decision'], "justment_prob": justment[2]['prob']})
+			result.append({"disease": disease[3]['disease'], "disease_prob": disease[3]['prob'],
+				"justment": justment[3]['decision'], "justment_prob": justment[3]['prob']})
+			
+			return render(request, 'result.html', {'decision_type': decision_type, "result": result})
 
 
 	else:
